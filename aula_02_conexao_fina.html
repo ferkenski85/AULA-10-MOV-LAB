@@ -3,10 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MOV LAB - Aula 10: Ativação Rítmica</title>
+    <title>MOV LAB - Aula 02: Conexão Fina</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
-    <style>@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap'); body { font-family: 'Inter', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; } .glass-effect { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.2); } .btn-primary, .btn-secondary, .btn-success, .btn-warning { color: white; transition: all 0.3s ease; } .btn-primary:hover, .btn-secondary:hover, .btn-success:hover, .btn-warning:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(0,0,0,0.2); } .btn-success { background: linear-gradient(135deg, #43e97b, #38f9d7); } .btn-warning { background: linear-gradient(135deg, #f59e0b, #facc15); } .btn-primary { background: linear-gradient(135deg, #ef4444, #f87171); } .exercise-card { transition: all 0.3s ease; border-left: 4px solid transparent; } .exercise-card:hover { border-left-color: #f87171; transform: translateX(5px); } .exercise-card.active { border-left-color: #10b981; background: #f0fdf4 !important; transform: translateX(5px); box-shadow: 0 10px 25px rgba(16, 185, 129, 0.2); } .timer-display { font-family: 'Courier New', monospace; font-weight: bold; font-size: 1.5rem; min-width: 80px; text-align: center; } .timer-display.active { color: #10b981; animation: timerPulse 1s infinite; } .timer-display.warning { color: #f59e0b; animation: timerPulse 0.5s infinite; } @keyframes timerPulse { 50% { transform: scale(1.1); } } .floating-icon { animation: float 3s ease-in-out infinite; } @keyframes float { 50% { transform: translateY(-10px); } } .phase-header { background: linear-gradient(135deg, #667eea, #764ba2); -webkit-background-clip: text; -webkit-text-fill-color: transparent; } .progress-bar { transition: width 1s ease-in-out; } .sound-indicator { position: fixed; top: 20px; right: 20px; z-index: 1000; padding: 12px 16px; border-radius: 8px; color: white; font-weight: bold; opacity: 0; transform: translateY(-20px); transition: all 0.3s ease; } .sound-indicator.show { opacity: 1; transform: translateY(0); } .sound-indicator.start { background: #10b981; } .sound-indicator.end { background: #ef4444; }</style>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        body { font-family: 'Inter', sans-serif; background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); min-height: 100vh; }
+        .glass-effect { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.2); }
+        .btn-primary, .btn-secondary, .btn-success, .btn-warning { color: white; transition: all 0.3s ease; }
+        .btn-primary:hover, .btn-secondary:hover, .btn-success:hover, .btn-warning:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
+        .btn-success { background: linear-gradient(135deg, #43e97b, #38f9d7); }
+        .btn-warning { background: linear-gradient(135deg, #f59e0b, #facc15); }
+        .btn-primary { background: linear-gradient(135deg, #ef4444, #f87171); }
+        .exercise-card { transition: all 0.3s ease; border-left: 4px solid transparent; }
+        .exercise-card:hover { border-left-color: #f87171; transform: translateX(5px); }
+        .exercise-card.active { border-left-color: #4facfe; background: #eff6ff !important; transform: translateX(5px); box-shadow: 0 10px 25px rgba(79, 172, 254, 0.2); }
+        .timer-display { font-family: 'Courier New', monospace; font-weight: bold; font-size: 1.5rem; min-width: 80px; text-align: center; }
+        .timer-display.active { color: #4facfe; animation: timerPulse 1s infinite; }
+        @keyframes timerPulse { 50% { transform: scale(1.1); } }
+        .floating-icon { animation: float 3s ease-in-out infinite; }
+        @keyframes float { 50% { transform: translateY(-10px); } }
+        .phase-header { background: linear-gradient(135deg, #4facfe, #00f2fe); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .progress-bar { transition: width 1s ease-in-out; }
+        .sound-indicator { position: fixed; top: 20px; right: 20px; z-index: 1000; padding: 12px 16px; border-radius: 8px; color: white; font-weight: bold; opacity: 0; transform: translateY(-20px); transition: all 0.3s ease; }
+        .sound-indicator.show { opacity: 1; transform: translateY(0); }
+        .sound-indicator.start { background: #10b981; } .sound-indicator.end { background: #ef4444; }
+    </style>
 </head>
 <body class="p-4">
 
@@ -28,16 +50,15 @@
 
     <div class="max-w-4xl mx-auto">
         <div class="glass-effect rounded-3xl p-8 mb-6 text-center">
-            <div class="floating-icon text-6xl mb-4">⚡️</div>
-            <h1 class="text-4xl font-bold phase-header mb-2">Acervo MOV LAB - Aula 10</h1>
-            <h2 class="text-3xl font-semibold text-gray-800 mb-4">"Ativação Rítmica: O Corpo Desperto e Responsivo"</h2>
+            <div class="floating-icon text-6xl mb-4">👁️</div>
+            <h1 class="text-4xl font-bold phase-header mb-2">Acervo MOV LAB - Aula 02</h1>
+            <h2 class="text-3xl font-semibold text-gray-800 mb-4">"Conexão Fina: Das Retinas aos Metacarpos"</h2>
             <div class="flex flex-wrap justify-center gap-4 text-lg text-gray-600">
-                <div class="flex items-center"><i class="fas fa-calendar-alt mr-2 text-blue-500"></i>Segunda, 25 de Agosto</div>
                 <div class="flex items-center"><i class="fas fa-dumbbell mr-2 text-green-500"></i>Nenhum material</div>
                 <div class="flex items-center"><i class="fas fa-clock mr-2 text-purple-500"></i>15 minutos</div>
             </div>
             <div class="mt-6 p-4 bg-yellow-50 rounded-xl border-l-4 border-yellow-500">
-                <p class="text-gray-700 italic"><strong>Foco:</strong> "Acordar" as conexões cérebro-músculo com exercícios rítmicos, criando um corpo mais alerta e estável para a semana.</p>
+                <p class="text-gray-700 italic"><strong>Foco:</strong> Sessão neuro-sensorial focada em olhos e punhos, entendendo a conexão direta com a rigidez cervical.</p>
             </div>
             <div class="mt-6 flex justify-center space-x-4">
                 <button onclick="startAllTimers()" class="btn-success px-6 py-3 rounded-full"><i class="fas fa-play mr-2"></i>Iniciar Aula</button>
@@ -45,12 +66,12 @@
                 <button onclick="resetAllTimers()" class="btn-primary px-6 py-3 rounded-full"><i class="fas fa-redo mr-2"></i>Reiniciar</button>
             </div>
         </div>
-
-        <div class="glass-effect rounded-xl p-4 mb-6">
-            <div class="flex justify-between items-center mb-2"><span class="text-sm font-semibold text-gray-700">Progresso da Aula</span><span class="text-sm font-semibold text-gray-700" id="progressText">0%</span></div>
-            <div class="w-full bg-gray-200 rounded-full h-2"><div class="progress-bar bg-gradient-to-r from-green-400 to-blue-500 h-2 rounded-full" id="progressBar" style="width: 0%"></div></div>
-        </div>
         
+        <div class="glass-effect rounded-xl p-4 mb-6">
+             <div class="flex justify-between items-center mb-2"><span class="text-sm font-semibold text-gray-700">Progresso da Aula</span><span class="text-sm font-semibold text-gray-700" id="progressText">0%</span></div>
+            <div class="w-full bg-gray-200 rounded-full h-2"><div class="progress-bar bg-gradient-to-r from-blue-400 to-cyan-400 h-2 rounded-full" id="progressBar" style="width: 0%"></div></div>
+        </div>
+
         <div id="aula-container" class="space-y-6"></div>
 
     </div>
@@ -63,20 +84,20 @@
         const aula = {
             fases: [
                 { nome: "CONEXÃO INICIAL", icone: "fas fa-play-circle", cor: "green-500", exercicios: [
-                    { id: 0, nome: "Ativação por Tapping", duracao: 60, movimento: "Com as pontas dos dedos, dê batidinhas rítmicas e leves por todo o corpo: peito, ombros, braços, costas (onde alcançar), coxas e panturrilhas.", script: "Bem-vindos. Hoje vamos despertar o corpo com a 'Ativação Rítmica'. Comecem com essas batidinhas leves para acordar a pele e os músculos." }
+                    { id: 0, nome: "Ativação Distal", duracao: 60, movimento: "Esfregue as mãos vigorosamente para gerar calor. Em seguida, sacuda as mãos por 20-30 segundos para aumentar o fluxo sanguíneo.", script: "Hoje o foco é na nossa 'periferia'. Começamos aquecendo e preparando nossas mãos para um trabalho de mobilidade mais profundo." }
                 ]},
-                { nome: "FLUXO DIRECIONAL DE ATIVAÇÃO RÍTMICA", icone: "fas fa-tachometer-alt", cor: "orange-500", exercicios: [
-                    { id: 1, nome: "Rotação Cervical com Foco Ocular", duracao: 60, movimento: "Estenda o polegar à frente. Gire a cabeça para a direita. Pare. Mova *apenas os olhos* mais para a direita. Segure 3s. Volte os olhos, depois a cabeça. 30s cada lado." },
-                    { id: 2, nome: "Protração e Retração Escapular em Pé", duracao: 60, movimento: "Braços estendidos à frente. Sem dobrar os cotovelos, alcance para frente (separando as escápulas), depois puxe para trás (juntando as escápulas)." },
-                    { id: 3, nome: "Ativação Isométrica Cruzada", duracao: 75, movimento: "Levante o joelho direito. Pressione a palma da mão esquerda contra a parte de dentro do joelho, e o joelho contra a mão. Crie tensão máxima e segure por 10s. Repita 3x de cada lado." },
-                    { id: 4, nome: "Hinge Isométrico com Ativação Dorsal", duracao: 75, movimento: "Incline o tronco para frente (Hinge). Estenda os braços à frente. Puxe os cotovelos para trás como numa remada e segure a contração máxima nas costas. Sustente por 10s. Repita 3x." },
-                    { id: 5, nome: "Agachamento com Pulso Rítmico", duracao: 75, movimento: "Agache até a metade. Faça 3 pulsos curtos e rítmicos e suba completamente. Repita em ritmo constante. 8-10 repetições." },
-                    { id: 6, nome: "Equilíbrio Reativo", duracao: 75, movimento: "Equilibre-se no pé esquerdo, braços à frente. Mova os braços em direções diferentes rapidamente, forçando a perna de apoio a estabilizar. 35s cada lado." },
-                    { id: 7, nome: "Panturrilha Rítmica (Single-Double)", duracao: 60, movimento: "Sequência de ritmo: suba uma vez, desça. Suba duas vezes rápidas, desça. Mantenha o padrão: 1... 1, 2..." },
-                    { id: 8, nome: "Fluxo de Descompressão Restauradora", duracao: 90, movimento: "Flua entre a descida com as costas retas (Hinge) e a subida com as costas redondas (Roll up)." }
+                { nome: "FLUXO NEUROMUSCULAR", icone: "fas fa-brain", cor: "blue-500", exercicios: [
+                    { id: 1, nome: "Mobilidade 3D do Punho", duracao: 60, movimento: "Braço estendido, punho neutro. Lentamente, faça: flexão (dedos para baixo), extensão (dedos para cima), desvio ulnar (para o lado do dedo mindinho) e radial (para o lado do polegar). 30s cada braço." },
+                    { id: 2, nome: "Rotações Ativas (Pronação/Supinação)", duracao: 60, movimento: "Cotovelo a 90 graus, colado ao corpo. Lentamente, gire a palma da mão para cima (supinação) e para baixo (pronação), mantendo o cotovelo fixo. 30s cada braço." },
+                    { id: 3, nome: "Alongamento dos Flexores do Punho", duracao: 60, movimento: "Estenda o braço, palma para cima. Com a outra mão, puxe os dedos suavemente para baixo e para trás, sentindo o alongamento no antebraço. 30s cada lado." },
+                    { id: 4, nome: "Alongamento dos Extensores do Punho", duracao: 60, movimento: "Estenda o braço, palma para baixo. Com a outra mão, puxe os dedos suavemente para baixo e em direção ao seu corpo. 30s cada lado." },
+                    { id: 5, nome: "Foco Perto & Longe", duracao: 60, movimento: "Estenda o polegar à frente. Foque no polegar por 10s. Em seguida, foque em um objeto distante (a mais de 6 metros) por 10s. Repita por 3 ciclos." },
+                    { id: 6, nome: "A Caixa Visual", duracao: 60, movimento: "Cabeça parada. Imagine uma grande caixa à sua frente. Olhe para o canto superior esquerdo (3s), superior direito (3s), inferior direito (3s), inferior esquerdo (3s). Inverta a direção." },
+                    { id: 7, nome: "Liberação do Suboccipital", duracao: 60, movimento: "Com as pontas dos dedos, massageie suavemente a musculatura na base do crânio. Incline a cabeça levemente para a frente para aumentar o alívio.", comando: "Existe uma conexão neurológica direta entre os músculos dos olhos e da nuca. Ao relaxar um, ajudamos o outro." }
                 ]},
-                { nome: "INTEGRAÇÃO FINAL", icone: "fas fa-check-circle", cor: "purple-500", exercicios: [
-                    { id: 9, nome: "Percepção Final", duracao: 75, movimento: "Fique em pé, de olhos fechados. Sinta o corpo. Ele deve se sentir mais 'ligado', responsivo e desperto. Respire e perceba as novas sensações.", script: "Sintam a diferença. O corpo está mais presente, mais alerta. Vocês treinaram o sistema nervoso tanto quanto os músculos. Essa foi a 'Ativação Rítmica'." }
+                 { nome: "INTEGRAÇÃO FINAL", icone: "fas fa-check-circle", cor: "purple-500", exercicios: [
+                    { id: 8, nome: "Alongamento de Pescoço com Tração Suave", duracao: 60, movimento: "Incline a cabeça para a direita, deixe a mão direita repousar sobre a orelha (sem puxar). Estenda o braço esquerdo para baixo e para o lado. 30s cada lado." },
+                    { id: 9, nome: "Abertura Peitoral Final", duracao: 60, movimento: "Entrelace as mãos atrás do corpo, estenda os cotovelos e abra o peito, olhando levemente para cima.", script: "Agora, integramos o trabalho, devolvendo o corpo a uma postura mais neutra e expansiva. Parabéns!" }
                 ]}
             ]
         };
@@ -92,7 +113,13 @@
             timeElapsed++; let cumulativeTime = 0;
             for(const ex of allExercises) {
                 const exStartTime = cumulativeTime; const exEndTime = cumulativeTime + ex.duracao;
-                if (timeElapsed > exStartTime && timeElapsed <= exEndTime) { const timeLeft = exEndTime - timeElapsed; document.getElementById(`timer-${ex.id}`).textContent = formatTime(timeLeft); activateCard(ex.id); if (timeElapsed === exStartTime + 1) { playSound(800, 0.2); showIndicator(`Iniciando: ${ex.nome}`, 'start'); } } else { deactivateCard(ex.id); } cumulativeTime += ex.duracao;
+                if (timeElapsed > exStartTime && timeElapsed <= exEndTime) {
+                    const timeLeft = exEndTime - timeElapsed;
+                    document.getElementById(`timer-${ex.id}`).textContent = formatTime(timeLeft);
+                    activateCard(ex.id);
+                    if (timeElapsed === exStartTime + 1) { playSound(800, 0.2); showIndicator(`Iniciando: ${ex.nome}`, 'start'); }
+                } else { deactivateCard(ex.id); }
+                cumulativeTime += ex.duracao;
             }
             const progress=(timeElapsed/totalDuration)*100; document.getElementById('progressBar').style.width=`${progress}%`; document.getElementById('progressText').textContent=`${Math.round(progress)}%`;
             if (timeElapsed >= totalDuration) { playSound(400,0.4); showIndicator('Aula Finalizada!', 'end'); clearInterval(mainInterval); }

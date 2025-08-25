@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MOV LAB - Aula 03: Fluido Dinâmico</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        body { font-family: 'Inter', sans-serif; background: linear-gradient(135deg, #FF5F6D 0%, #FFC371 100%); min-height: 100vh; }
+        .glass-effect { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.2); }
+        .btn-primary, .btn-secondary, .btn-success, .btn-warning { color: white; transition: all 0.3s ease; }
+        .btn-primary:hover, .btn-secondary:hover, .btn-success:hover, .btn-warning:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
+        .btn-success { background: linear-gradient(135deg, #43e97b, #38f9d7); }
+        .btn-warning { background: linear-gradient(135deg, #f59e0b, #facc15); }
+        .btn-primary { background: linear-gradient(135deg, #ef4444, #f87171); }
+        .exercise-card { transition: all 0.3s ease; border-left: 4px solid transparent; }
+        .exercise-card:hover { border-left-color: #f87171; transform: translateX(5px); }
+        .exercise-card.active { border-left-color: #FF5F6D; background: #fff5f5 !important; transform: translateX(5px); box-shadow: 0 10px 25px rgba(255, 95, 109, 0.2); }
+        .timer-display { font-family: 'Courier New', monospace; font-weight: bold; font-size: 1.5rem; min-width: 80px; text-align: center; }
+        .timer-display.active { color: #FF5F6D; animation: timerPulse 1s infinite; }
+        @keyframes timerPulse { 50% { transform: scale(1.1); } }
+        .floating-icon { animation: float 3s ease-in-out infinite; }
+        @keyframes float { 50% { transform: translateY(-10px); } }
+        .phase-header { background: linear-gradient(135deg, #FF5F6D, #FFC371); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .progress-bar { transition: width 1s ease-in-out; }
+        .sound-indicator { position: fixed; top: 20px; right: 20px; z-index: 1000; padding: 12px 16px; border-radius: 8px; color: white; font-weight: bold; opacity: 0; transform: translateY(-20px); transition: all 0.3s ease; }
+        .sound-indicator.show { opacity: 1; transform: translateY(0); }
+        .sound-indicator.start { background: #10b981; } .sound-indicator.end { background: #ef4444; }
+    </style>
+</head>
+<body class="p-4">
+
+    <!-- Botão Voltar para o Início -->
+    <div class="fixed top-4 left-4 z-50">
+        <a href="index.html" class="glass-effect rounded-full p-3 text-gray-700 hover:text-green-600 transition-all duration-300 hover:scale-110 hover:shadow-lg group">
+            <i class="fas fa-home text-xl"></i>
+            <span class="absolute left-full ml-2 top-1/2 transform -translate-y-1/2 bg-gray-800 text-white px-2 py-1 rounded text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">
+                Voltar ao Início
+            </span>
+        </a>
+    </div>
+
+
+
+    <div id="soundIndicator" class="sound-indicator">
+        <i class="fas fa-volume-up mr-2"></i><span id="soundText"></span>
+    </div>
+
+    <div class="max-w-4xl mx-auto">
+        <div class="glass-effect rounded-3xl p-8 mb-6 text-center">
+            <div class="floating-icon text-6xl mb-4">🌊</div>
+            <h1 class="text-4xl font-bold phase-header mb-2">Acervo MOV LAB - Aula 03</h1>
+            <h2 class="text-3xl font-semibold text-gray-800 mb-4">"Fluido Dinâmico: A Onda Energética"</h2>
+             <div class="flex flex-wrap justify-center gap-4 text-lg text-gray-600">
+                <div class="flex items-center"><i class="fas fa-dumbbell mr-2 text-green-500"></i>Nenhum material</div>
+                <div class="flex items-center"><i class="fas fa-clock mr-2 text-purple-500"></i>15 minutos</div>
+            </div>
+            <div class="mt-6 p-4 bg-yellow-50 rounded-xl border-l-4 border-yellow-500">
+                <p class="text-gray-700 italic"><strong>Foco:</strong> Aula mais dinâmica e fluida para combater a letargia, com foco em movimentos amplos e na ativação cardiovascular leve para oxigenar o cérebro e os tecidos.</p>
+            </div>
+            <div class="mt-6 flex justify-center space-x-4">
+                <button onclick="startAllTimers()" class="btn-success px-6 py-3 rounded-full"><i class="fas fa-play mr-2"></i>Iniciar Aula</button>
+                <button onclick="pauseAllTimers()" class="btn-warning px-6 py-3 rounded-full"><i class="fas fa-pause mr-2"></i>Pausar</button>
+                <button onclick="resetAllTimers()" class="btn-primary px-6 py-3 rounded-full"><i class="fas fa-redo mr-2"></i>Reiniciar</button>
+            </div>
+        </div>
+        
+        <div class="glass-effect rounded-xl p-4 mb-6">
+            <div class="flex justify-between items-center mb-2"><span class="text-sm font-semibold text-gray-700">Progresso da Aula</span><span class="text-sm font-semibold text-gray-700" id="progressText">0%</span></div>
+            <div class="w-full bg-gray-200 rounded-full h-2"><div class="progress-bar bg-gradient-to-r from-red-500 to-yellow-500 h-2 rounded-full" id="progressBar" style="width: 0%"></div></div>
+        </div>
+
+        <div id="aula-container" class="space-y-6"></div>
+    </div>
+    
+    <script>
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        let mainInterval;
+        let timeElapsed = 0;
+
+        const aula = {
+            fases: [
+                { nome: "CONEXÃO E AQUECIMENTO DINÂMICO", icone: "fas fa-play-circle", cor: "green-500", exercicios: [
+                    { id: 0, nome: "Marcha Estacionária com Elevação de Braços", duracao: 60, movimento: "Marcha no lugar, elevando o joelho em um ritmo confortável. Eleve o braço oposto ao joelho que sobe. Mantenha o movimento contínuo.", script: "Sexta-feira. O objetivo hoje é energia. Vamos aumentar a frequência cardíaca de forma controlada para bombear oxigênio para todo o corpo, limpando a fadiga mental." },
+                    { id: 1, nome: "Polichinelos sem Impacto (Side-Step Jacks)", duracao: 60, movimento: "Dê um passo para o lado com o pé direito enquanto eleva os braços lateralmente, como em um polichinelo. Retorne ao centro e alterne para o lado esquerdo." }
+                ]},
+                { nome: "FLUXO DE MOVIMENTO CONTÍNUO", icone: "fas fa-sync-alt", cor: "orange-500", exercicios: [
+                    { id: 2, nome: "Agachamento Corporal para Panturrilhas", duracao: 75, movimento: "Faça um agachamento, projetando o quadril para trás. Ao subir do agachamento, sem parar, eleve os calcanhares, ficando na ponta dos pés. Flua entre os dois movimentos." },
+                    { id: 3, nome: "Afundo Reverso com Rotação do Tronco", duracao: 75, movimento: "Dê um passo largo para trás com a perna direita. Na base do afundo, gire o tronco na direção da perna da frente (esquerda). Volte ao centro e suba. Alterne. ~35s cada lado." },
+                    { id: 4, nome: "Alongamento Dinâmico 'Bom Dia'", duracao: 75, movimento: "Mãos na nuca. Com os joelhos levemente flexionados, incline o tronco para frente com a coluna perfeitamente reta. Suba contraindo os glúteos." },
+                    { id: 5, nome: "Pêndulo Lateral (Side Lunge)", duracao: 75, movimento: "Pés bem afastados. Dê uma passada lateral, flexionando um joelho e mantendo o outro esticado. Alterne os lados de forma fluida e contínua.", comando: "Pensem nisso como uma única dança, um movimento levando ao outro. Estamos ativando as maiores musculaturas do corpo." }
+                ]},
+                 { nome: "DESACELERAÇÃO E EXPANSÃO FINAL", icone: "fas fa-fan", cor: "blue-500", exercicios: [
+                    { id: 6, nome: "Círculos Amplos com os Braços", duracao: 60, movimento: "Inspire subindo os braços pela frente. Expire descendo-os pelos lados, em um grande círculo. Inverta a direção." },
+                    { id: 7, nome: "Alongamento do Quadríceps", duracao: 60, movimento: "Apoie-se se necessário, puxe o pé em direção ao glúteo, mantendo os joelhos juntos. 30s cada lado." },
+                    { id: 8, nome: "Alongamento 'Figura 4' em Pé", duracao: 60, movimento: "Apoie-se. Cruze o tornozelo direito sobre o joelho esquerdo e agache levemente, projetando o quadril para trás para alongar o glúteo. 30s cada lado." },
+                    { id: 9, nome: "Expansão Final 'O Sol'", duracao: 60, movimento: "Pés afastados. Inspire agachando e juntando as mãos embaixo. Expire subindo e abrindo os braços e o peito em um grande círculo, como o nascer do sol.", script: "Agora, diminuímos o ritmo, mas não a amplitude. Após ativar, criamos espaço. Levem essa vitalidade para o fim de semana." }
+                 ]}
+            ]
+        };
+        const allExercises = aula.fases.flatMap(f => f.exercicios);
+        const totalDuration = allExercises.reduce((acc, ex) => acc + ex.duracao, 0); 
+        
+        function createLayout() { const container = document.getElementById('aula-container'); aula.fases.forEach(fase => { const faseDiv = document.createElement('div'); faseDiv.className = 'glass-effect rounded-3xl p-6'; faseDiv.innerHTML = `<h3 class="text-2xl font-bold text-gray-800 flex items-center mb-6"><i class="${fase.icone} text-${fase.cor} mr-3"></i>FASE - ${fase.nome}</h3>`; fase.exercicios.forEach(ex => { const card=document.createElement('div'); card.className='exercise-card bg-white p-6 rounded-xl mb-4'; card.id=`exercise-${ex.id}`; const scriptHtml = ex.script ? `<div class="bg-blue-50 p-4 mt-4 rounded-lg border-l-4 border-blue-500"><p class="text-blue-700 italic"><strong>Script:</strong> "${ex.script}"</p></div>` : (ex.comando ? `<div class="bg-yellow-50 p-4 mt-4 rounded-lg border-l-4 border-yellow-500"><p class="text-yellow-700 italic"><strong>Comando:</strong> "${ex.comando}"</p></div>` : ''); card.innerHTML = `<div class="flex justify-between items-start mb-4"><h4 class="text-xl font-semibold text-gray-800 flex items-center"><span class="bg-${fase.cor} text-white rounded-full w-8 h-8 flex items-center justify-center mr-3">${ex.id + 1}</span>${ex.nome}</h4><div class="flex items-center space-x-3"><div class="timer-display text-${fase.cor}" id="timer-${ex.id}">${formatTime(ex.duracao)}</div></div></div><p class="text-gray-700 mb-4">${ex.movimento}</p>${scriptHtml}`; faseDiv.appendChild(card); }); container.appendChild(faseDiv); }); }
+        function formatTime(s) { const m = Math.floor(s/60); const sec = s % 60; return `${m.toString().padStart(2,'0')}:${sec.toString().padStart(2,'0')}`; }
+        function playSound(freq, dur) { try{const o=audioContext.createOscillator();const g=audioContext.createGain();o.connect(g);g.connect(audioContext.destination);o.frequency.value=freq;o.start(0);g.gain.exponentialRampToValueAtTime(0.00001,audioContext.currentTime+dur);o.stop(audioContext.currentTime+dur);} catch(e){console.error("Audio error:", e);} }
+        function showIndicator(text, type) { const el = document.getElementById('soundIndicator'); const txt = document.getElementById('soundText'); txt.textContent = text; el.className=`sound-indicator show ${type}`; setTimeout(() => el.classList.remove('show'), 2000); }
+        function updateTimers() {
+            timeElapsed++; let cumulativeTime = 0;
+            for(const ex of allExercises) {
+                const exStartTime = cumulativeTime; const exEndTime = cumulativeTime + ex.duracao;
+                if (timeElapsed > exStartTime && timeElapsed <= exEndTime) {
+                    const timeLeft = exEndTime - timeElapsed;
+                    document.getElementById(`timer-${ex.id}`).textContent = formatTime(timeLeft);
+                    activateCard(ex.id);
+                    if (timeElapsed === exStartTime + 1) { playSound(800, 0.2); showIndicator(`Iniciando: ${ex.nome}`, 'start'); }
+                } else { deactivateCard(ex.id); }
+                cumulativeTime += ex.duracao;
+            }
+            const progress=(timeElapsed/totalDuration)*100; document.getElementById('progressBar').style.width=`${progress}%`; document.getElementById('progressText').textContent=`${Math.round(progress)}%`;
+            if (timeElapsed >= totalDuration) { playSound(400,0.4); showIndicator('Aula Finalizada!', 'end'); clearInterval(mainInterval); }
+        }
+        function activateCard(id){ document.getElementById(`exercise-${id}`).classList.add('active'); const timerEl = document.getElementById(`timer-${id}`); if (timerEl) timerEl.classList.add('active');}
+        function deactivateCard(id){ document.getElementById(`exercise-${id}`).classList.remove('active'); const timerEl = document.getElementById(`timer-${id}`); if(timerEl) timerEl.classList.remove('active');}
+        function startAllTimers() { resetAllTimers(); playSound(600,0.2); showIndicator('Aula Iniciando...', 'start'); mainInterval = setInterval(updateTimers, 1000); }
+        function pauseAllTimers() { clearInterval(mainInterval); playSound(600,0.2); showIndicator('Aula Pausada', 'end'); }
+        function resetAllTimers(){ clearInterval(mainInterval); timeElapsed = 0; document.getElementById('progressBar').style.width = '0%'; document.getElementById('progressText').textContent = '0%'; allExercises.forEach(ex => { document.getElementById(`timer-${ex.id}`).textContent = formatTime(ex.duracao); deactivateCard(ex.id); }); playSound(400,0.2); showIndicator('Aula Reiniciada', 'end'); }
+        document.addEventListener('DOMContentLoaded', createLayout);
+    </script>
+</body>
+</html>
