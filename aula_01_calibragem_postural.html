@@ -2,27 +2,109 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>MOV LAB - Aula 01: Calibragem Postural</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
-    <style>@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap'); body { font-family: 'Inter', sans-serif; background: linear-gradient(135deg, #6B8E23 0%, #8FBC8F 100%); min-height: 100vh; } .glass-effect { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.2); } .btn-primary, .btn-secondary, .btn-success, .btn-warning { color: white; transition: all 0.3s ease; } .btn-primary:hover, .btn-secondary:hover, .btn-success:hover, .btn-warning:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(0,0,0,0.2); } .btn-success { background: linear-gradient(135deg, #43e97b, #38f9d7); } .btn-warning { background: linear-gradient(135deg, #f59e0b, #facc15); } .btn-primary { background: linear-gradient(135deg, #ef4444, #f87171); } .exercise-card { transition: all 0.3s ease; border-left: 4px solid transparent; } .exercise-card:hover { border-left-color: #f87171; transform: translateX(5px); } .exercise-card.active { border-left-color: #6B8E23; background: #f0fdf4 !important; transform: translateX(5px); box-shadow: 0 10px 25px rgba(107, 142, 35, 0.2); } .timer-display { font-family: 'Courier New', monospace; font-weight: bold; font-size: 1.5rem; min-width: 80px; text-align: center; } .timer-display.active { color: #6B8E23; animation: timerPulse 1s infinite; } @keyframes timerPulse { 50% { transform: scale(1.1); } } .floating-icon { animation: float 3s ease-in-out infinite; } @keyframes float { 50% { transform: translateY(-10px); } } .phase-header { background: linear-gradient(135deg, #6B8E23, #8FBC8F); -webkit-background-clip: text; -webkit-text-fill-color: transparent; } .progress-bar { transition: width 1s ease-in-out; } .sound-indicator { position: fixed; top: 20px; right: 20px; z-index: 1000; padding: 12px 16px; border-radius: 8px; color: white; font-weight: bold; opacity: 0; transform: translateY(-20px); transition: all 0.3s ease; } .sound-indicator.show { opacity: 1; transform: translateY(0); } .sound-indicator.start { background: #10b981; } .sound-indicator.end { background: #ef4444; }</style>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .btn-primary { background: linear-gradient(135deg, #ff6b6b, #ff8e53); transition: all 0.3s ease; min-height: 44px; min-width: 44px; }
+        .btn-primary:hover, .btn-primary:active { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(255, 107, 107, 0.3); }
+        .btn-secondary { background: linear-gradient(135deg, #4facfe, #00f2fe); transition: all 0.3s ease; min-height: 44px; min-width: 44px; }
+        .btn-secondary:hover, .btn-secondary:active { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(79, 172, 254, 0.3); }
+        .btn-success { background: linear-gradient(135deg, #43e97b, #38f9d7); transition: all 0.3s ease; min-height: 44px; }
+        .btn-success:hover, .btn-success:active { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(67, 233, 123, 0.3); }
+        .btn-warning { background: linear-gradient(135deg, #fa709a, #fee140); transition: all 0.3s ease; min-height: 44px; }
+        .btn-warning:hover, .btn-warning:active { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(250, 112, 154, 0.3); }
+        .btn-music { background: linear-gradient(135deg, #8b5cf6, #a855f7); transition: all 0.3s ease; min-height: 44px; }
+        .btn-music:hover, .btn-music:active { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(139, 92, 246, 0.3); }
+        
+        .exercise-card { transition: all 0.3s ease; border-left: 4px solid transparent; }
+        .exercise-card:hover, .exercise-card:active { border-left-color: #ff6b6b; transform: translateX(5px); }
+        .exercise-card.active {
+            border-left-color: #10b981;
+            background: linear-gradient(135deg, #ecfdf5, #f0fdf4) !important;
+            transform: translateX(5px);
+            box-shadow: 0 10px 25px rgba(16, 185, 129, 0.2);
+        }
+        
+        .timer-display { font-family: 'Courier New', monospace; font-weight: bold; font-size: 1.5rem; min-width: 80px; text-align: center; }
+        .timer-display.active { color: #10b981; animation: timerPulse 1s infinite; }
+        .timer-display.warning { color: #f59e0b; animation: timerPulse 0.5s infinite; }
+        .timer-display.danger { color: #ef4444; animation: timerPulse 0.3s infinite; }
+        
+        @keyframes timerPulse { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.1); opacity: 0.8; } }
+        
+        .floating-icon { animation: float 3s ease-in-out infinite; }
+        @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-10px); } }
+        
+        .phase-header { background: linear-gradient(135deg, #667eea, #764ba2); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .progress-bar { transition: width 1s ease-in-out; }
+        
+        .sound-indicator { position: fixed; top: 20px; right: 20px; z-index: 1000; padding: 12px 16px; border-radius: 8px; color: white; font-weight: bold; opacity: 0; transform: translateY(-20px); transition: all 0.3s ease; }
+        .sound-indicator.show { opacity: 1; transform: translateY(0); }
+        .sound-indicator.start { background: #10b981; }
+        .sound-indicator.end { background: #ef4444; }
+        .sound-indicator.music { background: #8b5cf6; }
+        
+        .music-controls { position: fixed; bottom: 20px; right: 20px; z-index: 1000; display: flex; gap: 10px; flex-wrap: wrap; }
+        
+        .ios-audio-banner { position: fixed; top: 0; left: 0; right: 0; background: linear-gradient(135deg, #ff6b6b, #ff8e53); color: white; padding: 15px; text-align: center; z-index: 2000; transform: translateY(-100%); transition: transform 0.3s ease; }
+        .ios-audio-banner.show { transform: translateY(0); }
+        .ios-audio-banner button { background: rgba(255, 255, 255, 0.2); border: 1px solid rgba(255, 255, 255, 0.3); color: white; padding: 10px 20px; border-radius: 25px; margin-top: 10px; font-weight: bold; min-height: 44px; }
+        
+        @media print {
+            body { background: white !important; font-size: 12px; }
+            .glass-effect { background: white !important; box-shadow: none !important; border: 1px solid #e5e7eb !important; }
+            .btn-primary, .btn-secondary, .btn-success, .btn-warning, .btn-music { background: #6b7280 !important; color: white !important; -webkit-print-color-adjust: exact; }
+            .floating-icon { animation: none !important; }
+            .sound-indicator, .music-controls, .ios-audio-banner { display: none !important; }
+        }
+        @media screen and (min-width: 768px) and (max-width: 1024px) {
+            .music-controls { bottom: 30px; right: 30px; }
+            .timer-display { font-size: 1.75rem; }
+            .btn-primary, .btn-secondary, .btn-success, .btn-warning, .btn-music { min-height: 50px; padding: 12px 20px; }
+        }
+    </style>
 </head>
 <body class="p-4">
-
-    <!-- Botão Voltar para o Início -->
-    <div class="fixed top-4 left-4 z-50">
-        <a href="index.html" class="glass-effect rounded-full p-3 text-gray-700 hover:text-green-600 transition-all duration-300 hover:scale-110 hover:shadow-lg group">
-            <i class="fas fa-home text-xl"></i>
-            <span class="absolute left-full ml-2 top-1/2 transform -translate-y-1/2 bg-gray-800 text-white px-2 py-1 rounded text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">
-                Voltar ao Início
-            </span>
-        </a>
+    <div id="iosAudioBanner" class="ios-audio-banner">
+        <div><i class="fas fa-volume-up mr-2"></i><strong>Ativar Áudio</strong></div>
+        <div class="text-sm mt-1">Toque no botão abaixo para ativar os sons e música de fundo</div>
+        <button onclick="activateAudioForIOS()" id="activateAudioBtn"><i class="fas fa-play mr-2"></i>Ativar Áudio</button>
     </div>
 
-    <div id="soundIndicator" class="sound-indicator">
-        <i class="fas fa-volume-up mr-2"></i><span id="soundText"></span>
+    <div id="soundIndicator" class="sound-indicator"><i class="fas fa-volume-up mr-2"></i><span id="soundText">Iniciando Exercício</span></div>
+
+    <div class="music-controls">
+        <button onclick="toggleBackgroundMusic()" id="musicBtn" class="btn-music text-white px-4 py-2 rounded-full"><i class="fas fa-music mr-2"></i>Música</button>
+        <button onclick="adjustVolume(-0.1)" class="btn-secondary text-white px-3 py-2 rounded-full"><i class="fas fa-volume-down"></i></button>
+        <button onclick="adjustVolume(0.1)" class="btn-secondary text-white px-3 py-2 rounded-full"><i class="fas fa-volume-up"></i></button>
     </div>
+
+    <audio id="backgroundMusic" loop preload="auto" style="display: none;"><source src="data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBSuBzvLZiTYIG2m98OScTgwOUarm7blmGgU7k9n1unEiBC13yO/eizEIHWq+8+OWT" type="audio/wav"></audio>
+    <audio id="startSound" preload="auto" style="display: none;"><source src="data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBSuBzvLZiTYIG2m98OScTgwOUarm7blmGgU7k9n1unEiBC13yO/eizEIHWq+8+OWT" type="audio/wav"></audio>
+    <audio id="endSound" preload="auto" style="display: none;"><source src="data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1dJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBSuBzvLZiTYIG2m98OScTgwOUarm7blmGgU7k9n1unEiBC13yO/eizEIHWq+8+OWT" type="audio/wav"></audio>
 
     <div class="max-w-4xl mx-auto">
         <div class="glass-effect rounded-3xl p-8 mb-6 text-center">
@@ -30,80 +112,267 @@
             <h1 class="text-4xl font-bold phase-header mb-2">Acervo MOV LAB - Aula 01</h1>
             <h2 class="text-3xl font-semibold text-gray-800 mb-4">"Calibragem Postural: Do Crânio ao Calcâneo"</h2>
             <div class="flex flex-wrap justify-center gap-4 text-lg text-gray-600">
-                <div class="flex items-center"><i class="fas fa-dumbbell mr-2 text-green-500"></i>Nenhum material</div>
-                <div class="flex items-center"><i class="fas fa-clock mr-2 text-purple-500"></i>15 minutos</div>
+                <div class="flex items-center"><i class="fas fa-dumbbell mr-2 text-green-500"></i>Material: Nenhum</div>
+                <div class="flex items-center"><i class="fas fa-clock mr-2 text-purple-500"></i>13 minutos</div>
+                <div class="flex items-center"><i class="fas fa-cogs mr-2 text-blue-500"></i>Reset Neuromuscular</div>
             </div>
             <div class="mt-6 p-4 bg-yellow-50 rounded-xl border-l-4 border-yellow-500">
-                <p class="text-gray-700 italic"><strong>Foco:</strong> Uma varredura corporal completa para "zerar" os desajustes e preparar o corpo para a semana de trabalho, com ênfase na mobilidade da coluna.</p>
+                <p class="text-gray-700 italic"><strong>Foco:</strong> Uma sessão de "reset" neuromuscular para reestabelecer a comunicação neural e a mobilidade, fazendo você sentir o corpo de uma forma diferente.</p>
             </div>
-            <div class="mt-6 flex justify-center space-x-4">
-                <button onclick="startAllTimers()" class="btn-success px-6 py-3 rounded-full"><i class="fas fa-play mr-2"></i>Iniciar Aula</button>
-                <button onclick="pauseAllTimers()" class="btn-warning px-6 py-3 rounded-full"><i class="fas fa-pause mr-2"></i>Pausar</button>
-                <button onclick="resetAllTimers()" class="btn-primary px-6 py-3 rounded-full"><i class="fas fa-redo mr-2"></i>Reiniciar</button>
+            <div class="mt-6 flex justify-center space-x-4 flex-wrap">
+                <button onclick="startAllTimers()" class="btn-success text-white px-6 py-3 rounded-full mb-2"><i class="fas fa-play mr-2"></i>Iniciar Aula Completa</button>
+                <button onclick="pauseAllTimers()" class="btn-warning text-white px-6 py-3 rounded-full mb-2"><i class="fas fa-pause mr-2"></i>Pausar Tudo</button>
+                <button onclick="resetAllTimers()" class="btn-primary text-white px-6 py-3 rounded-full mb-2"><i class="fas fa-redo mr-2"></i>Reiniciar Tudo</button>
             </div>
         </div>
 
         <div class="glass-effect rounded-xl p-4 mb-6">
-            <div class="flex justify-between items-center mb-2"><span class="text-sm font-semibold text-gray-700">Progresso da Aula</span><span class="text-sm font-semibold text-gray-700" id="progressText">0%</span></div>
-            <div class="w-full bg-gray-200 rounded-full h-2"><div class="progress-bar bg-gradient-to-r from-green-400 to-lime-500 h-2 rounded-full" id="progressBar" style="width: 0%"></div></div>
+            <div class="flex justify-between items-center mb-2">
+                <span class="text-sm font-semibold text-gray-700">Progresso da Aula</span>
+                <span class="text-sm font-semibold text-gray-700" id="progressText">0%</span>
+            </div>
+            <div class="w-full bg-gray-200 rounded-full h-3"><div class="progress-bar bg-gradient-to-r from-green-400 via-blue-400 to-purple-500 h-3 rounded-full" id="progressBar" style="width: 0%"></div></div>
         </div>
 
-        <div id="aula-container" class="space-y-6"></div>
+        <div class="glass-effect rounded-3xl p-6 mb-6">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="text-2xl font-bold text-gray-800 flex items-center"><i class="fas fa-play-circle text-green-500 mr-3"></i>FASE 1 - CONEXÃO E PARTIDA</h3>
+                <div class="text-sm text-gray-600">Duração: 1 minuto</div>
+            </div>
+            <div class="exercise-card bg-white p-6 rounded-xl mb-4" id="exercise-0">
+                <div class="flex justify-between items-start mb-4">
+                    <h4 class="text-xl font-semibold text-gray-800 mb-3">O Fio Invisível com Respiração Tridimensional</h4>
+                    <div class="flex items-center space-x-3">
+                        <div class="timer-display text-green-600" id="timer-0">01:00</div>
+                        <button onclick="startExerciseTimer(0, 60)" class="btn-primary text-white px-3 py-2 rounded-lg text-sm"><i class="fas fa-play"></i></button>
+                        <button onclick="pauseExerciseTimer(0)" class="bg-gray-500 text-white px-3 py-2 rounded-lg text-sm"><i class="fas fa-pause"></i></button>
+                    </div>
+                </div>
+                <p class="text-gray-700 mb-4">Pés na largura do quadril, joelhos destravados. Imagine um fio puxando o topo da sua cabeça para o teto. Mãos nas costelas. Inspire pelo nariz, empurrando as mãos para os lados. Expire pela boca, sentindo as costelas se fecharem.</p>
+                <div class="bg-blue-50 p-4 rounded-lg border-l-4 border-blue-500">
+                    <h5 class="font-semibold text-blue-800 mb-2"><i class="fas fa-microphone mr-2"></i>Script MOV LAB:</h5>
+                    <p class="text-blue-700 italic">"Sejam bem-vindos à 'Calibragem Postural'. Hoje, vamos reconfigurar o corpo. Começamos criando espaço. Sintam as costelas se expandindo como um balão em 3D. Este é o primeiro passo para descomprimir a coluna."</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="glass-effect rounded-3xl p-6 mb-6">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="text-2xl font-bold text-gray-800 flex items-center"><i class="fas fa-stream text-indigo-500 mr-3"></i>FASE 2 - FLUXO DIRECIONAL DE CALIBRAGEM</h3>
+                <div class="text-sm text-gray-600">Duração: 10 minutos</div>
+            </div>
+            
+            <div class="exercise-card bg-white p-6 rounded-xl mb-4" id="exercise-1"><h5 class="text-lg font-semibold text-gray-800 flex items-center justify-between"><span><span class="bg-blue-500 text-white rounded-full w-8 h-8 flex items-center justify-center mr-3 text-sm">1</span>[CABEÇA & PESCOÇO] Liberação Ativa do Trapézio</span><div class="flex items-center space-x-3"><div class="timer-display text-blue-600" id="timer-1">01:00</div><button onclick="startExerciseTimer(1, 60)" class="btn-primary text-white px-3 py-2 rounded-lg text-sm"><i class="fas fa-play"></i></button><button onclick="pauseExerciseTimer(1)" class="bg-gray-500 text-white px-3 py-2 rounded-lg text-sm"><i class="fas fa-pause"></i></button></div></h5><p class="text-gray-700 my-3">Incline a cabeça para a direita. Com os dedos da mão direita, localize e pressione o trapézio esquerdo. Mantendo a pressão, mova a cabeça para frente e para trás. Trocar o lado.</p><div class="bg-green-50 p-3 rounded-lg"><p class="text-green-700"><strong>Script:</strong> "Isto é uma liberação miofascial ativa. Vocês estão 'pinçando' a origem da tensão e movendo a articulação para forçar o relaxamento."</p></div></div>
+            <div class="exercise-card bg-white p-6 rounded-xl mb-4" id="exercise-2"><h5 class="text-lg font-semibold text-gray-800 flex items-center justify-between"><span><span class="bg-blue-500 text-white rounded-full w-8 h-8 flex items-center justify-center mr-3 text-sm">2</span>[OMBROS] Flossing Escapular ("O Arqueiro")</span><div class="flex items-center space-x-3"><div class="timer-display text-blue-600" id="timer-2">01:00</div><button onclick="startExerciseTimer(2, 60)" class="btn-primary text-white px-3 py-2 rounded-lg text-sm"><i class="fas fa-play"></i></button><button onclick="pauseExerciseTimer(2)" class="bg-gray-500 text-white px-3 py-2 rounded-lg text-sm"><i class="fas fa-pause"></i></button></div></h5><p class="text-gray-700 my-3">Braço esquerdo estendido à frente. Braço direito puxa uma "corda de arco" imaginária, unindo a escápula direita à coluna. Olhe para trás. Inverta e troque os lados.</p><div class="bg-green-50 p-3 rounded-lg"><p class="text-green-700"><strong>Script:</strong> "Este movimento lubrifica os ombros. Estamos ativando os romboides, essenciais para combater a postura de ombros caídos."</p></div></div>
+            <div class="exercise-card bg-white p-6 rounded-xl mb-4" id="exercise-3"><h5 class="text-lg font-semibold text-gray-800 flex items-center justify-between"><span><span class="bg-blue-500 text-white rounded-full w-8 h-8 flex items-center justify-center mr-3 text-sm">3</span>[BRAÇOS & PUNHOS] A Espiral do Antebraço</span><div class="flex items-center space-x-3"><div class="timer-display text-blue-600" id="timer-3">01:00</div><button onclick="startExerciseTimer(3, 60)" class="btn-primary text-white px-3 py-2 rounded-lg text-sm"><i class="fas fa-play"></i></button><button onclick="pauseExerciseTimer(3)" class="bg-gray-500 text-white px-3 py-2 rounded-lg text-sm"><i class="fas fa-pause"></i></button></div></h5><p class="text-gray-700 my-3">Braço direito à frente, palma para baixo. Gire o braço para fora (palma para cima) enquanto flexiona o punho (dedos para o céu). Retorne e gire para dentro, flexionando para baixo. Trocar o braço.</p><div class="bg-green-50 p-3 rounded-lg"><p class="text-green-700"><strong>Script:</strong> "Combinamos rotação com mobilidade do punho para liberar toda a cadeia muscular do antebraço, um alívio para quem digita."</p></div></div>
+            <div class="exercise-card bg-white p-6 rounded-xl mb-4" id="exercise-4"><h5 class="text-lg font-semibold text-gray-800 flex items-center justify-between"><span><span class="bg-blue-500 text-white rounded-full w-8 h-8 flex items-center justify-center mr-3 text-sm">4</span>[COSTAS & TRONCO] Gato Arrepiado com Rotação Torácica</span><div class="flex items-center space-x-3"><div class="timer-display text-blue-600" id="timer-4">01:00</div><button onclick="startExerciseTimer(4, 60)" class="btn-primary text-white px-3 py-2 rounded-lg text-sm"><i class="fas fa-play"></i></button><button onclick="pauseExerciseTimer(4)" class="bg-gray-500 text-white px-3 py-2 rounded-lg text-sm"><i class="fas fa-pause"></i></button></div></h5><p class="text-gray-700 my-3">Mãos nas coxas. Na fase do "Gato" (costas arredondadas), pare. Eleve o braço direito para o teto, girando o tronco. Retorne. Faça o "Vaca", pare, e repita. Trocar o braço.</p><div class="bg-green-50 p-3 rounded-lg"><p class="text-green-700"><strong>Script:</strong> "Aqui, dissociamos os movimentos da coluna, aliviando a rigidez da área mais 'travada' pela cadeira."</p></div></div>
+            <div class="exercise-card bg-white p-6 rounded-xl mb-4" id="exercise-5"><h5 class="text-lg font-semibold text-gray-800 flex items-center justify-between"><span><span class="bg-blue-500 text-white rounded-full w-8 h-8 flex items-center justify-center mr-3 text-sm">5</span>[COSTAS & TRONCO] Enrolamento da Coluna com Balanço Pendular</span><div class="flex items-center space-x-3"><div class="timer-display text-blue-600" id="timer-5">01:00</div><button onclick="startExerciseTimer(5, 60)" class="btn-primary text-white px-3 py-2 rounded-lg text-sm"><i class="fas fa-play"></i></button><button onclick="pauseExerciseTimer(5)" class="bg-gray-500 text-white px-3 py-2 rounded-lg text-sm"><i class="fas fa-pause"></i></button></div></h5><p class="text-gray-700 my-3">A partir da cabeça, desça lentamente (roll down). Solte a cabeça e os braços. Realize um balanço suave com o tronco de um lado para o outro.</p><div class="bg-green-50 p-3 rounded-lg"><p class="text-green-700"><strong>Script:</strong> "Deixe a gravidade fazer o trabalho. O objetivo é soltar a musculatura paravertebral e a fáscia lombar. Sem forçar."</p></div></div>
+            <div class="exercise-card bg-white p-6 rounded-xl mb-4" id="exercise-6"><h5 class="text-lg font-semibold text-gray-800 flex items-center justify-between"><span><span class="bg-blue-500 text-white rounded-full w-8 h-8 flex items-center justify-center mr-3 text-sm">6</span>[QUADRIL] Agachamento Cossaco (Side Lunge Dinâmico)</span><div class="flex items-center space-x-3"><div class="timer-display text-blue-600" id="timer-6">01:00</div><button onclick="startExerciseTimer(6, 60)" class="btn-primary text-white px-3 py-2 rounded-lg text-sm"><i class="fas fa-play"></i></button><button onclick="pauseExerciseTimer(6)" class="bg-gray-500 text-white px-3 py-2 rounded-lg text-sm"><i class="fas fa-pause"></i></button></div></h5><p class="text-gray-700 my-3">Pés bem afastados. Flexione o joelho direito, projetando o quadril para trás e mantendo a perna esquerda esticada. Alterne para o outro lado de forma fluida.</p><div class="bg-green-50 p-3 rounded-lg"><p class="text-green-700"><strong>Script:</strong> "Estamos abrindo a parte interna das coxas e trabalhando a mobilidade do quadril num plano que raramente usamos."</p></div></div>
+            <div class="exercise-card bg-white p-6 rounded-xl mb-4" id="exercise-7"><h5 class="text-lg font-semibold text-gray-800 flex items-center justify-between"><span><span class="bg-blue-500 text-white rounded-full w-8 h-8 flex items-center justify-center mr-3 text-sm">7</span>[QUADRIL] Figura 4 Dinâmica</span><div class="flex items-center space-x-3"><div class="timer-display text-blue-600" id="timer-7">01:00</div><button onclick="startExerciseTimer(7, 60)" class="btn-primary text-white px-3 py-2 rounded-lg text-sm"><i class="fas fa-play"></i></button><button onclick="pauseExerciseTimer(7)" class="bg-gray-500 text-white px-3 py-2 rounded-lg text-sm"><i class="fas fa-pause"></i></button></div></h5><p class="text-gray-700 my-3">Equilibrando-se no pé esquerdo, coloque o tornozelo direito sobre o joelho esquerdo. Agache lentamente, projetando o quadril para trás. Suba e desça algumas vezes. Trocar a perna.</p><div class="bg-green-50 p-3 rounded-lg"><p class="text-green-700"><strong>Script:</strong> "Um dos alongamentos mais eficazes para o piriforme. A forma dinâmica ativa a musculatura enquanto alonga, desafiando seu equilíbrio."</p></div></div>
+            <div class="exercise-card bg-white p-6 rounded-xl mb-4" id="exercise-8"><h5 class="text-lg font-semibold text-gray-800 flex items-center justify-between"><span><span class="bg-blue-500 text-white rounded-full w-8 h-8 flex items-center justify-center mr-3 text-sm">8</span>[PERNAS] Agachamento com Adução e Abdução</span><div class="flex items-center space-x-3"><div class="timer-display text-blue-600" id="timer-8">01:00</div><button onclick="startExerciseTimer(8, 60)" class="btn-primary text-white px-3 py-2 rounded-lg text-sm"><i class="fas fa-play"></i></button><button onclick="pauseExerciseTimer(8)" class="bg-gray-500 text-white px-3 py-2 rounded-lg text-sm"><i class="fas fa-pause"></i></button></div></h5><p class="text-gray-700 my-3">Na subida de um agachamento, eleve lateralmente a perna direita esticada. Desça para outro agachamento e, na subida, eleve a perna esquerda.</p><div class="bg-green-50 p-3 rounded-lg"><p class="text-green-700"><strong>Script:</strong> "Combinamos fortalecimento com estabilidade. O movimento de elevação lateral ativa o glúteo médio, crucial para a saúde da lombar e joelhos."</p></div></div>
+            <div class="exercise-card bg-white p-6 rounded-xl mb-4" id="exercise-9"><h5 class="text-lg font-semibold text-gray-800 flex items-center justify-between"><span><span class="bg-blue-500 text-white rounded-full w-8 h-8 flex items-center justify-center mr-3 text-sm">9</span>[PÉS] O Acordeão Podal</span><div class="flex items-center space-x-3"><div class="timer-display text-blue-600" id="timer-9">01:00</div><button onclick="startExerciseTimer(9, 60)" class="btn-primary text-white px-3 py-2 rounded-lg text-sm"><i class="fas fa-play"></i></button><button onclick="pauseExerciseTimer(9)" class="bg-gray-500 text-white px-3 py-2 rounded-lg text-sm"><i class="fas fa-pause"></i></button></div></h5><p class="text-gray-700 my-3">Fique na ponta dos pés o mais alto possível. Desça e, sem parar, levante a ponta dos pés, apoiando-se nos calcanhares.</p><div class="bg-green-50 p-3 rounded-lg"><p class="text-green-700"><strong>Script:</strong> "Pense no seu pé como um 'acordeão', expandindo e comprimindo, melhorando a circulação e a estabilidade."</p></div></div>
+            <div class="exercise-card bg-white p-6 rounded-xl mb-4" id="exercise-10"><h5 class="text-lg font-semibold text-gray-800 flex items-center justify-between"><span><span class="bg-blue-500 text-white rounded-full w-8 h-8 flex items-center justify-center mr-3 text-sm">10</span>[INTEGRAÇÃO] Desenrolar com Alcance</span><div class="flex items-center space-x-3"><div class="timer-display text-blue-600" id="timer-10">01:00</div><button onclick="startExerciseTimer(10, 60)" class="btn-primary text-white px-3 py-2 rounded-lg text-sm"><i class="fas fa-play"></i></button><button onclick="pauseExerciseTimer(10)" class="bg-gray-500 text-white px-3 py-2 rounded-lg text-sm"><i class="fas fa-pause"></i></button></div></h5><p class="text-gray-700 my-3">Do último exercício, flexione o quadril, toque o chão e suba desenrolando a coluna, vértebra por vértebra. Ao chegar em cima, inspire e alcance o teto.</p></div>
+        </div>
+
+        <div class="glass-effect rounded-3xl p-6 mb-6">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="text-2xl font-bold text-gray-800 flex items-center"><i class="fas fa-check-circle text-green-500 mr-3"></i>FASE 3 - INTEGRAÇÃO FINAL</h3>
+                <div class="text-sm text-gray-600">Duração: 2 minutos</div>
+            </div>
+            <div class="exercise-card bg-white p-6 rounded-xl" id="exercise-11">
+                <div class="flex justify-between items-start mb-4">
+                    <h4 class="text-xl font-semibold text-gray-800 mb-3">Percepção Corporal e Encerramento</h4>
+                    <div class="flex items-center space-x-3">
+                        <div class="timer-display text-purple-600" id="timer-11">02:00</div>
+                        <button onclick="startExerciseTimer(11, 120)" class="btn-primary text-white px-3 py-2 rounded-lg text-sm"><i class="fas fa-play"></i></button>
+                        <button onclick="pauseExerciseTimer(11)" class="bg-gray-500 text-white px-3 py-2 rounded-lg text-sm"><i class="fas fa-pause"></i></button>
+                    </div>
+                </div>
+                <p class="text-gray-700 mb-4">Retornar à posição neutra, fechar os olhos e perceber as sensações no corpo, da cabeça aos pés, por 30 segundos.</p>
+                <div class="bg-purple-50 p-4 rounded-lg border-l-4 border-purple-500">
+                    <h5 class="font-semibold text-purple-800 mb-2"><i class="fas fa-microphone mr-2"></i>Script Final:</h5>
+                    <p class="text-purple-700 italic">"Respirem. Sintam a diferença de como o corpo se sentia há 13 minutos e como ele se sente agora. Mais longo, mais conectado, mais vivo. Esta foi a 'Calibragem Postural'. Parabéns pelo excelente trabalho."</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="glass-effect rounded-3xl p-6">
+            <h3 class="text-2xl font-bold text-gray-800 mb-6 flex items-center"><i class="fas fa-chart-bar text-indigo-500 mr-3"></i>Resumo da Sessão</h3>
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="bg-white p-6 rounded-xl">
+                    <h4 class="text-lg font-semibold text-gray-800 mb-4"><i class="fas fa-stopwatch text-blue-500 mr-3"></i>Tempo por Fase</h4>
+                    <div class="space-y-2">
+                        <div class="flex justify-between"><span>Fase 1 - Conexão:</span><span class="font-semibold text-green-600">1 min</span></div>
+                        <div class="flex justify-between"><span>Fase 2 - Calibragem:</span><span class="font-semibold text-blue-600">10 min</span></div>
+                        <div class="flex justify-between"><span>Fase 3 - Integração:</span><span class="font-semibold text-purple-600">2 min</span></div>
+                        <hr class="my-2"><div class="flex justify-between text-lg font-bold"><span>Total:</span><span class="text-indigo-600">13 minutos</span></div>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-xl">
+                    <h4 class="text-lg font-semibold text-gray-800 mb-4"><i class="fas fa-bullseye text-red-500 mr-3"></i>Objetivos Alcançados</h4>
+                    <ul class="space-y-2">
+                        <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i>Reconexão neuromuscular</li>
+                        <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i>Aumento da mobilidade geral</li>
+                        <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i>Liberação de tensões cervicais</li>
+                        <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i>Melhora da propriocepção</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
-        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-        let mainInterval;
-        let timeElapsed = 0;
-
-        const aula = {
-            fases: [
-                { nome: "CONEXÃO INICIAL", icone: "fas fa-play-circle", cor: "green-500", exercicios: [
-                    { id: 0, nome: "Respiração com Crescimento Axial", duracao: 60, movimento: "Em pé, pés na largura do quadril. Inspire sentindo o corpo crescer para o teto, como se um fio invisível puxasse sua cabeça. Expire relaxando os ombros, mas mantendo a altura.", script: "Bem-vindos. Vamos iniciar alinhando nossa estrutura. Começamos a semana crescendo e criando espaço entre cada vértebra." }
-                ]},
-                { nome: "FLUXO DIRECIONAL", icone: "fas fa-route", cor: "blue-500", exercicios: [
-                    { id: 1, nome: "Inclinação Lateral do Pescoço", duracao: 60, movimento: "Incline a orelha direita em direção ao ombro direito. Mão direita pode repousar sobre a cabeça (sem puxar). Relaxe o ombro esquerdo. 30s cada lado." },
-                    { id: 2, nome: "Rotação Cervical Diagonal", duracao: 60, movimento: "Ainda com a cabeça inclinada para a direita, gire o queixo em direção à axila direita. Mantenha por 25-30s cada lado." },
-                    { id: 3, nome: "Círculos Articulares dos Ombros", duracao: 60, movimento: "Faça círculos bem lentos e grandes com os ombros para trás, focando em unir e depois separar as escápulas." },
-                    { id: 4, nome: "Bombeamento e Extensão dos Punhos", duracao: 90, movimento: "Abra e feche as mãos com força 10x. Em seguida, estenda o braço direito e alongue os flexores (palma para cima) por 30s e extensores (palma para baixo) por 30s. Troque." },
-                    { id: 5, nome: "'Gato-Vaca' em Pé", duracao: 60, movimento: "Mãos nos joelhos semi-flexionados. Arredonde e depois arqueie a coluna, focando na mobilidade torácica e lombar." },
-                    { id: 6, nome: "Rotação Torácica Pivotante", duracao: 60, movimento: "Braços relaxados. Gire o tronco, permitindo que os braços balancem e o calcanhar oposto saia do chão." },
-                    { id: 7, nome: "Báscula Pélvica", duracao: 60, movimento: "Mãos na cintura. Dissocie o movimento da pelve para frente (anteversão) e para trás (retroversão), estabilizando o tronco." },
-                    { id: 8, nome: "Alongamento de Panturrilha", duracao: 60, movimento: "Um pé à frente do outro, calcanhar de trás no chão. Troque a perna na metade do tempo. 30s cada lado." },
-                ]},
-                 { nome: "INTEGRAÇÃO FINAL", icone: "fas fa-check-circle", cor: "purple-500", exercicios: [
-                    { id: 9, nome: "Alinhamento e Percepção Final", duracao: 120, movimento: "Volte à postura inicial de Crescimento Axial, com os olhos fechados. Perceba o corpo mais alinhado e 'espaçoso'. Respire profundamente.", script: "Finalizamos como começamos, em alinhamento. Levem essa consciência postural para a cadeira de vocês. Ótima semana." }
-                 ]}
-            ]
-        };
-        const allExercises = aula.fases.flatMap(f => f.exercicios);
-        const totalDuration = allExercises.reduce((acc, ex) => acc + ex.duracao, 0); 
+        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+        let audioContext, backgroundMusicOscillator, backgroundMusicGain, backgroundMusicElement, startSoundElement, endSoundElement;
+        let musicPlaying = false, audioInitialized = false;
+        let musicVolume = 0.05;
+        let timers = {}, currentExercise = -1;
+        const totalExercises = 12;
+        let completedExercises = 0;
+        const exerciseDurations = [60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 120];
+        const musicFrequencies = [220, 277.18, 329.63, 440, 554.37, 659.25];
         
-        function createLayout() { const container = document.getElementById('aula-container'); aula.fases.forEach(fase => { const faseDiv = document.createElement('div'); faseDiv.className = 'glass-effect rounded-3xl p-6'; faseDiv.innerHTML = `<h3 class="text-2xl font-bold text-gray-800 flex items-center mb-6"><i class="${fase.icone} text-${fase.cor} mr-3"></i>FASE - ${fase.nome}</h3>`; fase.exercicios.forEach(ex => { const card=document.createElement('div'); card.className='exercise-card bg-white p-6 rounded-xl mb-4'; card.id=`exercise-${ex.id}`; const scriptHtml = ex.script ? `<div class="bg-blue-50 p-4 mt-4 rounded-lg border-l-4 border-blue-500"><p class="text-blue-700 italic"><strong>Script:</strong> "${ex.script}"</p></div>` : (ex.comando ? `<div class="bg-yellow-50 p-4 mt-4 rounded-lg border-l-4 border-yellow-500"><p class="text-yellow-700 italic"><strong>Comando:</strong> "${ex.comando}"</p></div>` : ''); card.innerHTML = `<div class="flex justify-between items-start mb-4"><h4 class="text-xl font-semibold text-gray-800 flex items-center"><span class="bg-${fase.cor} text-white rounded-full w-8 h-8 flex items-center justify-center mr-3">${ex.id + 1}</span>${ex.nome}</h4><div class="flex items-center space-x-3"><div class="timer-display text-${fase.cor}" id="timer-${ex.id}">${formatTime(ex.duracao)}</div></div></div><p class="text-gray-700 mb-4">${ex.movimento}</p>${scriptHtml}`; faseDiv.appendChild(card); }); container.appendChild(faseDiv); }); }
-        function formatTime(s) { const m = Math.floor(s/60); const sec = s % 60; return `${m.toString().padStart(2,'0')}:${sec.toString().padStart(2,'0')}`; }
-        function playSound(freq, dur) { try{const o=audioContext.createOscillator();const g=audioContext.createGain();o.connect(g);g.connect(audioContext.destination);o.frequency.value=freq;o.start(0);g.gain.exponentialRampToValueAtTime(0.00001,audioContext.currentTime+dur);o.stop(audioContext.currentTime+dur);} catch(e){console.error("Audio error:", e);} }
-        function showIndicator(text, type) { const el = document.getElementById('soundIndicator'); const txt = document.getElementById('soundText'); txt.textContent = text; el.className=`sound-indicator show ${type}`; setTimeout(() => el.classList.remove('show'), 2000); }
-        function updateTimers() {
-            timeElapsed++; let cumulativeTime = 0;
-            for(const ex of allExercises) {
-                const exStartTime = cumulativeTime; const exEndTime = cumulativeTime + ex.duracao;
-                if (timeElapsed > exStartTime && timeElapsed <= exEndTime) {
-                    const timeLeft = exEndTime - timeElapsed;
-                    document.getElementById(`timer-${ex.id}`).textContent = formatTime(timeLeft);
-                    activateCard(ex.id);
-                    if (timeElapsed === exStartTime + 1) { playSound(800, 0.2); showIndicator(`Iniciando: ${ex.nome}`, 'start'); }
-                } else { deactivateCard(ex.id); }
-                cumulativeTime += ex.duracao;
-            }
-            const progress=(timeElapsed/totalDuration)*100; document.getElementById('progressBar').style.width=`${progress}%`; document.getElementById('progressText').textContent=`${Math.round(progress)}%`;
-            if (timeElapsed >= totalDuration) { playSound(400,0.4); showIndicator('Aula Finalizada!', 'end'); clearInterval(mainInterval); }
+        function initializeAudio() {
+            if (audioInitialized) return;
+            try { audioContext = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) { console.log('Web Audio API not available'); }
+            backgroundMusicElement = document.getElementById('backgroundMusic');
+            startSoundElement = document.getElementById('startSound');
+            endSoundElement = document.getElementById('endSound');
+            if (backgroundMusicElement) backgroundMusicElement.volume = musicVolume;
+            if (startSoundElement) startSoundElement.volume = 0.3;
+            if (endSoundElement) endSoundElement.volume = 0.3;
+            audioInitialized = true;
+            if (isIOS) document.getElementById('iosAudioBanner').classList.remove('show');
         }
-        function activateCard(id){ document.getElementById(`exercise-${id}`).classList.add('active'); const timerEl = document.getElementById(`timer-${id}`); if (timerEl) timerEl.classList.add('active');}
-        function deactivateCard(id){ document.getElementById(`exercise-${id}`).classList.remove('active'); const timerEl = document.getElementById(`timer-${id}`); if(timerEl) timerEl.classList.remove('active');}
-        function startAllTimers() { resetAllTimers(); playSound(600,0.2); showIndicator('Aula Iniciando...', 'start'); mainInterval = setInterval(updateTimers, 1000); }
-        function pauseAllTimers() { clearInterval(mainInterval); playSound(600,0.2); showIndicator('Aula Pausada', 'end'); }
-        function resetAllTimers(){ clearInterval(mainInterval); timeElapsed = 0; document.getElementById('progressBar').style.width = '0%'; document.getElementById('progressText').textContent = '0%'; allExercises.forEach(ex => { document.getElementById(`timer-${ex.id}`).textContent = formatTime(ex.duracao); deactivateCard(ex.id); }); playSound(400,0.2); showIndicator('Aula Reiniciada', 'end'); }
-        document.addEventListener('DOMContentLoaded', createLayout);
+        function activateAudioForIOS() {
+            initializeAudio();
+            if (audioContext && audioContext.state === 'suspended') audioContext.resume();
+            if (backgroundMusicElement) backgroundMusicElement.play().then(() => { backgroundMusicElement.pause(); backgroundMusicElement.currentTime = 0; });
+            document.getElementById('iosAudioBanner').classList.remove('show');
+            showSoundIndicator('Áudio Ativado', 'music');
+        }
+        function createBackgroundMusic() {
+            if (!audioContext || backgroundMusicOscillator) return false;
+            try {
+                backgroundMusicGain = audioContext.createGain();
+                backgroundMusicGain.connect(audioContext.destination);
+                backgroundMusicGain.gain.setValueAtTime(musicVolume, audioContext.currentTime);
+                const oscillators = musicFrequencies.map(freq => {
+                    const osc = audioContext.createOscillator();
+                    const gain = audioContext.createGain();
+                    osc.frequency.setValueAtTime(freq * 0.5, audioContext.currentTime);
+                    osc.type = 'sine';
+                    gain.gain.setValueAtTime(0.1 / musicFrequencies.length, audioContext.currentTime);
+                    osc.connect(gain);
+                    gain.connect(backgroundMusicGain);
+                    osc.start();
+                    return osc;
+                });
+                backgroundMusicOscillator = oscillators;
+                return true;
+            } catch (e) { return false; }
+        }
+        function toggleBackgroundMusic() {
+            if (!audioInitialized) initializeAudio();
+            const musicBtn = document.getElementById('musicBtn');
+            if (!musicPlaying) {
+                let musicStarted = createBackgroundMusic();
+                if (!musicStarted && backgroundMusicElement) { backgroundMusicElement.play().then(() => musicStarted = true); }
+                if (musicStarted || backgroundMusicOscillator) {
+                    musicPlaying = true;
+                    musicBtn.innerHTML = '<i class="fas fa-pause mr-2"></i>Pausar';
+                    showSoundIndicator('Música Iniciada', 'music');
+                }
+            } else {
+                if (backgroundMusicOscillator) { backgroundMusicOscillator.forEach(osc => { try { osc.stop(); } catch (e) {} }); backgroundMusicOscillator = null; }
+                if (backgroundMusicElement) { backgroundMusicElement.pause(); backgroundMusicElement.currentTime = 0; }
+                musicPlaying = false;
+                musicBtn.innerHTML = '<i class="fas fa-music mr-2"></i>Música';
+                showSoundIndicator('Música Pausada', 'music');
+            }
+        }
+        function adjustVolume(delta) {
+            musicVolume = Math.max(0, Math.min(0.3, musicVolume + delta));
+            if (backgroundMusicGain) backgroundMusicGain.gain.setValueAtTime(musicVolume, audioContext.currentTime);
+            if (backgroundMusicElement) backgroundMusicElement.volume = musicVolume;
+            showSoundIndicator(`Volume: ${Math.round(musicVolume * 100)}%`, 'music');
+        }
+        function playSound(frequency, duration, type = 'sine') {
+            if (!audioInitialized) return;
+            if (audioContext && audioContext.state !== 'suspended') {
+                try {
+                    const osc = audioContext.createOscillator(), gainNode = audioContext.createGain();
+                    osc.connect(gainNode); gainNode.connect(audioContext.destination);
+                    osc.frequency.value = frequency; osc.type = type;
+                    gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration);
+                    osc.start(); osc.stop(audioContext.currentTime + duration); return;
+                } catch (e) {}
+            }
+            const soundElement = frequency > 700 ? startSoundElement : endSoundElement;
+            if (soundElement) { soundElement.currentTime = 0; soundElement.play(); }
+        }
+        function playStartSound() { playSound(800, 0.2); setTimeout(() => playSound(1000, 0.3), 100); showSoundIndicator('Iniciando Exercício', 'start'); }
+        function playEndSound() { playSound(600, 0.2); setTimeout(() => playSound(400, 0.3), 100); showSoundIndicator('Exercício Finalizado', 'end'); }
+        function playWarningSound() { playSound(1200, 0.1); }
+        function showSoundIndicator(text, type) {
+            const indicator = document.getElementById('soundIndicator'), soundText = document.getElementById('soundText');
+            soundText.textContent = text; indicator.className = `sound-indicator show ${type}`;
+            setTimeout(() => indicator.classList.remove('show'), 2000);
+        }
+        function formatTime(s) { return `${Math.floor(s/60).toString().padStart(2,'0')}:${(s%60).toString().padStart(2,'0')}`; }
+        function updateTimerDisplay(id, timeLeft) {
+            const timerEl = document.getElementById(`timer-${id}`);
+            if (!timerEl) return;
+            timerEl.textContent = formatTime(timeLeft);
+            timerEl.classList.remove('active', 'warning', 'danger');
+            if (timeLeft <= 5) timerEl.classList.add('danger');
+            else if (timeLeft <= 10) timerEl.classList.add('warning');
+            else timerEl.classList.add('active');
+        }
+        function startExerciseTimer(id, duration) {
+            if (!audioInitialized) initializeAudio();
+            if (timers[id]) clearInterval(timers[id]);
+            let timeLeft = duration; currentExercise = id;
+            document.querySelectorAll('.exercise-card').forEach(c => c.classList.remove('active'));
+            document.getElementById(`exercise-${id}`).classList.add('active');
+            playStartSound(); updateTimerDisplay(id, timeLeft);
+            timers[id] = setInterval(() => {
+                timeLeft--; updateTimerDisplay(id, timeLeft);
+                if (timeLeft === 10) playWarningSound();
+                if (timeLeft <= 0) {
+                    clearInterval(timers[id]); delete timers[id]; playEndSound();
+                    document.getElementById(`exercise-${id}`).classList.remove('active');
+                    completedExercises++; updateProgress();
+                    if (currentExercise >= 0 && id < totalExercises - 1) {
+                        setTimeout(() => startExerciseTimer(id + 1, exerciseDurations[id + 1]), 2000);
+                    } else if (id === totalExercises - 1) {
+                        showSoundIndicator('Aula Finalizada!', 'end'); currentExercise = -1;
+                    }
+                }
+            }, 1000);
+        }
+        function pauseExerciseTimer(id) {
+            if (timers[id]) {
+                clearInterval(timers[id]); delete timers[id];
+                document.getElementById(`exercise-${id}`).classList.remove('active');
+                showSoundIndicator('Exercício Pausado', 'end');
+            }
+        }
+        function startAllTimers() { if (!audioInitialized) initializeAudio(); resetAllTimers(false); completedExercises = 0; updateProgress(); startExerciseTimer(0, exerciseDurations[0]); showSoundIndicator('Iniciando Aula Completa', 'start'); }
+        function pauseAllTimers() { Object.keys(timers).forEach(id => pauseExerciseTimer(parseInt(id))); currentExercise = -1; showSoundIndicator('Todos os Timers Pausados', 'end'); }
+        function resetAllTimers(showMessage = true) {
+            pauseAllTimers();
+            exerciseDurations.forEach((d, i) => { const el = document.getElementById(`timer-${i}`); if(el) { el.textContent = formatTime(d); el.classList.remove('active', 'warning', 'danger'); } });
+            completedExercises = 0; updateProgress();
+            if(showMessage) showSoundIndicator('Todos os Timers Reiniciados', 'music');
+        }
+        function updateProgress() {
+            const percent = (completedExercises / totalExercises) * 100;
+            document.getElementById('progressBar').style.width = `${percent}%`;
+            document.getElementById('progressText').textContent = `${Math.round(percent)}%`;
+        }
+        document.addEventListener('DOMContentLoaded', () => { if (isIOS) { setTimeout(() => document.getElementById('iosAudioBanner').classList.add('show'), 1000); } else { initializeAudio(); } });
     </script>
 </body>
 </html>
